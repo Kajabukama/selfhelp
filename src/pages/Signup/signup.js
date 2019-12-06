@@ -1,55 +1,64 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
+import PropTypes from 'prop-types';
 // mui components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import TextField from '@material-ui/core/TextField'
+import FormControl from '@material-ui/core/FormControl'
+import OutlinedInput from '@material-ui/core/OutlinedInput'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import EmailIcon from '@material-ui/icons/EmailSharp';
+import AccountIcon from '@material-ui/icons/AccountCircleSharp';
 
 import logo from '../../assets/imgs/coat_arms.svg';
 
+// React redux
+import { connect } from 'react-redux';
+import { signupUser } from '../../redux/actions/user.actions';
 class Signup extends Component {
   state = {
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
-    passwordConfirm: '',
     handle: '',
-    loading: false,
-    errors: {}
+    errors: {},
+    showPassword: false
   }
 
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
+  showPassword = () => {
+    this.setState({
+      showPassword: !this.state.showPassword
+    })
+  };
+
+  handleChange = (eve) => {
+    this.setState({ [eve.target.name]: eve.target.value })
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
+  handleSubmit = (eve) => {
+    eve.preventDefault();
     this.setState({ loading: true });
 
     let credentials = {
+      handle: this.state.handle,
       email: this.state.email,
       password: this.state.password
     }
-    axios.post('/signup', credentials)
-      .then((response) => {
-        this.setState({ loading: false });
-        console.log(response.data);
-        this.props.history.push('/')
-      })
-      .catch((err) => {
-        this.setState({
-          errors: err.response.data,
-          loading: false
-        })
-      })
+    this.props.signupUser(credentials, this.props.history);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
   }
   render() {
-    const { errors, loading } = this.state;
+    const { errors } = this.state;
     return (
       <div className="signin">
         <Grid
@@ -63,61 +72,83 @@ class Signup extends Component {
                 <div className="header">
                   <img src={logo} alt="" />
                   <div className="heading">
-                    <Typography className="title" variant="h5">Signup</Typography>
-                    <Typography variant="body1">Use valid credentials</Typography>
+                    <Typography className="title" variant="h6">Signup</Typography>
+                    <Typography variant="h5" color="primary">trouble.shoot</Typography>
                   </div>
                 </div>
                 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                  <div className="form-field">
-                    <TextField
-                      fullWidth
+                  <FormControl variant="outlined" fullWidth className="form-field">
+                    <OutlinedInput
+                      type="handle"
                       id="handle"
                       name="handle"
                       value={this.state.handle}
-                      helperText={errors.handle}
                       error={errors.handle ? true : false}
                       label="Username"
                       placeholder="Username"
-                      margin="normal"
-                      variant="outlined" onChange={this.handleChange}
+                      onChange={this.handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <AccountIcon />
+                        </InputAdornment>
+                      }
                     />
-                  </div>
-                  <div className="form-field">
-                    <TextField
-                      fullWidth
+                    <FormHelperText>{errors.handle}</FormHelperText>
+                  </FormControl>
+                  <FormControl variant="outlined" fullWidth className="form-field">
+                    <OutlinedInput
+                      type="email"
                       id="email"
+                      helperText="some text"
                       name="email"
                       value={this.state.email}
-                      helperText={errors.email}
                       error={errors.email ? true : false}
                       label="Email address"
                       placeholder="Email address"
-                      margin="normal"
-                      variant="outlined" onChange={this.handleChange}
+                      onChange={this.handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <EmailIcon />
+                        </InputAdornment>
+                      }
                     />
-                  </div>
-                  <div className="form-field">
-                    <TextField fullWidth
-                      type="password"
+                    <FormHelperText>{errors.email}</FormHelperText>
+                  </FormControl>
+                  <FormControl className="form-field" variant="outlined" fullWidth>
+                    <OutlinedInput
+                      type={this.state.showPassword ? 'text' : 'password'}
                       id="password"
                       name="password"
                       value={this.state.password}
-                      helperText={errors.password}
                       error={errors.password ? true : false}
                       label="Password"
                       placeholder="Password"
-                      margin="normal"
-                      variant="outlined" onChange={this.handleChange}
+                      onChange={this.handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={this.showPassword}
+                            edge="end"
+                          >
+                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
                     />
-                  </div>
+                    <FormHelperText>{errors.password}</FormHelperText>
+                  </FormControl>
 
-                  <Button
-                    type="submit"
-                    className="signin-button" fullWidth
-                    variant="contained"
-                    color="primary">
-                    Create Account
-                  </Button>
+                  <div className="form-button-field">
+                    <Button
+                      type="submit"
+                      className="signin-button"
+                      fullWidth
+                      variant="contained"
+                      color="primary">
+                      Create Account
+                    </Button>
+                  </div>
                 </form>
               </CardContent>
             </Card>
@@ -135,4 +166,15 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+Signup.proTypes = {
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
+  signupUser: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  UI: state.UI
+});
+
+export default connect(mapStateToProps, { signupUser })(Signup);

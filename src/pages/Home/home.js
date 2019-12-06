@@ -45,8 +45,8 @@ class Home extends Component {
             direction="row"
             justify="center"
             alignItems="flex-start">
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}>
+            <Grid item sm={3}></Grid>
+            <Grid item sm={6}>
               {listScreams}
             </Grid>
             <Grid item xs={3}></Grid>

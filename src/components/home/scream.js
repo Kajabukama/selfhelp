@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
+// import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
@@ -42,10 +42,10 @@ export default function ScreamCard(prop) {
         title={prop.author}
         subheader={'Published ' + dayjs(prop.published).fromNow()}
       />
-      <CardMedia className={classes.media}
+      {/* <CardMedia className={classes.media}
         image={prop.image}
         title={prop.title}
-      />
+      /> */}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {prop.body}

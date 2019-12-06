@@ -1,3 +1,8 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* html,
 body {
   height: 100%;
@@ -14,12 +19,42 @@ body {
   margin: 80px auto 0 auto;
 }
 
+@media (max-width: 600) {
+  .container {
+    width: 100%;
+  }
+}
+
 .signin {
-  background-color: #38A780;
+  /* background-color: #38A780; */
   height: 100vh !important;
   display: flex;
   direction: column;
   align-items: center;
+}
+
+.signin>* {
+  z-index: 999;
+
+}
+
+.signin::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background-color: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+.form-field {
+  margin-bottom: 0.8rem !important;
+}
+
+.signin .form-button-field {
+  margin-top: 1rem;
 }
 
 .signin .header {

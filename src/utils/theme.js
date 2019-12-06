@@ -1,11 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import './assets/custom-fonts.css';
+import './../assets/fonts.css';
 export const theme = createMuiTheme({
   palette: {
     type: 'light',
     primary: {
       light: "#42C799",
-      main: "#1dd1a1",
+      main: "#38A780",
       dark: "#10ac84",
       contrastText: "#fff",
     },
