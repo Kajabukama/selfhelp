@@ -15,12 +15,13 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import EmailIcon from '@material-ui/icons/EmailSharp';
 import AccountIcon from '@material-ui/icons/AccountCircleSharp';
-
-import logo from '../../assets/imgs/coat_arms.svg';
-
-// React redux
+// React redux configuration
 import { connect } from 'react-redux';
 import { signupUser } from '../../redux/actions/user.actions';
+// custom components
+import Loader from '../../components/shared/loader';
+import logo from '../../assets/imgs/coat_arms.svg';
+
 class Signup extends Component {
   state = {
     email: '',
@@ -42,7 +43,6 @@ class Signup extends Component {
 
   handleSubmit = (eve) => {
     eve.preventDefault();
-    this.setState({ loading: true });
 
     let credentials = {
       handle: this.state.handle,
@@ -58,6 +58,7 @@ class Signup extends Component {
     }
   }
   render() {
+    const { UI: { loading } } = this.props;
     const { errors } = this.state;
     return (
       <div className="signin">
@@ -66,7 +67,7 @@ class Signup extends Component {
           direction="column"
           justify="center"
           alignItems="center">
-          <Grid item sm>
+          <Grid item sm={4}>
             <Card className="login-card">
               <CardContent className="card-content">
                 <div className="header">
@@ -141,6 +142,7 @@ class Signup extends Component {
 
                   <div className="form-button-field">
                     <Button
+                      disabled={loading}
                       type="submit"
                       className="signin-button"
                       fullWidth
@@ -148,6 +150,7 @@ class Signup extends Component {
                       color="primary">
                       Create Account
                     </Button>
+                    {loading && <Loader text="Processing" />}
                   </div>
                 </form>
               </CardContent>

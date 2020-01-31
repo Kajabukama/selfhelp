@@ -39,6 +39,25 @@ export const signupUser = (userData, history) => (dispatch) => {
     })
 }
 
+// add user details action
+// @params credentials/history
+export const updateUserDetails = (userData, history) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios.post('/user', userData)
+    .then((res) => {
+      setAuthorizationHeader(res.data.token);
+      dispatch(fetchUserData());
+      dispatch({ type: CLEAR_ERRORS });
+      history.push('/')
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      })
+    })
+}
+
 // user logout action
 // @params null
 export const logoutUser = () => (dispatch) => {

@@ -38,7 +38,7 @@ class Home extends Component {
         />)
     return (
       this.state.isloading ?
-        <Loader /> :
+        <Loader text="loading data" /> :
         <div className="container">
           <Grid
             container

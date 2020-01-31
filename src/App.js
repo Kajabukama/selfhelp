@@ -17,6 +17,7 @@ import Navbar from './components/shared/navbar';
 import Home from './pages/Home/home';
 import Signin from './pages/Login/signin';
 import Signup from './pages/Signup/signup';
+import UpdateUser from './pages/Profile/Update/update'
 import NotFound from './pages/Errors/notfound';
 import AuthRoute from './utils/auth_route';
 
@@ -48,6 +49,9 @@ const MainRoutes = withRouter(({ location }) => {
           <Route
             exact path='/'
             component={Home} />
+          <Route
+            path="/update-user-details"
+            component={UpdateUser} />
           <AuthRoute
             path='/signin'
             component={Signin} />

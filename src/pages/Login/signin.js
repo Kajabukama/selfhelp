@@ -19,7 +19,8 @@ import AccountIcon from '@material-ui/icons/AccountCircleSharp';
 import logo from '../../assets/imgs/coat_arms.svg';
 
 import { connect } from 'react-redux';
-import { loginUser } from '../../redux/actions/user.actions'
+import { loginUser } from '../../redux/actions/user.actions';
+import Loader from '../../components/shared/loader';
 
 class Signin extends Component {
   state = {
@@ -33,6 +34,11 @@ class Signin extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  openDialog() {
+    this.setState({
+      open: true
+    });
+  }
   showPassword = () => {
     this.setState({
       showPassword: !this.state.showPassword
@@ -62,7 +68,7 @@ class Signin extends Component {
           direction="column"
           justify="center"
           alignItems="center">
-          <Grid item sm>
+          <Grid item sm={4}>
             <Card className="login-card">
               <CardContent className="card-content">
                 <div className="header">
@@ -85,7 +91,7 @@ class Signin extends Component {
                       onChange={this.handleChange}
                       endAdornment={
                         <InputAdornment position="end">
-                          <AccountIcon color="primary" />
+                          <AccountIcon />
                         </InputAdornment>
                       }
                     />
@@ -103,7 +109,7 @@ class Signin extends Component {
                       onChange={this.handleChange}
                       endAdornment={
                         <InputAdornment position="end">
-                          <IconButton color="primary"
+                          <IconButton
                             aria-label="toggle password visibility"
                             onClick={this.showPassword}
                             edge="end"
@@ -116,12 +122,14 @@ class Signin extends Component {
                     <FormHelperText>{errors.password}</FormHelperText>
                   </FormControl>
                   <Button
+                    disabled={loading}
                     type="submit"
                     className="signin-button" fullWidth
                     variant="contained"
                     color="primary">
                     Signin
                   </Button>
+                  {loading && <Loader text="Processing" />}
                 </form>
               </CardContent>
             </Card>
@@ -138,7 +146,7 @@ class Signin extends Component {
     )
   }
 }
-Signin.proTypes = {
+Signin.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
